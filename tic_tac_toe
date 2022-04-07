@@ -1,0 +1,196 @@
+package com.company;
+
+import java.util.*;
+
+public class Main {
+
+    public static boolean stillPlaying = true;
+    public static String winner = "";
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        String[][] array = new String[3][3];
+
+        for (int i = 0; i < 3; i++) {
+            for (int j = 0; j < 3; j++) {
+                array[i][j] = " ";
+            }
+        }
+
+        System.out.println("---------");
+
+        for (int i = 0; i < 3; i++) {
+            System.out.print("| ");
+            for (int j = 0; j < 3; j++) {
+                System.out.print(array[i][j] + " ");
+            }
+            System.out.print("|");
+            System.out.println();
+        }
+
+        System.out.println("---------");
+
+
+        boolean repeat = true;
+        String player = "X";
+        int round = 0;
+
+        while(stillPlaying) {
+
+            while (repeat) {
+                System.out.print("Enter the coordinates: ");
+                String co1 = scanner.next();
+                String co2 = scanner.next();
+
+                int coInt1 = 0;
+                int coInt2 = 0;
+
+                if (isInteger(co1) && isInteger(co2)) {
+                    coInt1 = Integer.parseInt(co1);
+                    coInt2 = Integer.parseInt(co2);
+
+                    if ((coInt1 > 0 && coInt1 < 4) && (coInt2 > 0 && coInt2 < 4)) {
+                        if ("X".equals(array[coInt1 - 1][coInt2 - 1]) || "O".equals(array[coInt1 - 1][coInt2 - 1])) {
+                            System.out.println("This cell is occupied! Choose another one!");
+                        } else {
+                            array[coInt1 - 1][coInt2 - 1] = player;
+                            if ("X".equals(player)) {
+                                player = "O";
+                            } else {
+                                player = "X";
+                            }
+
+                            repeat = false;
+                            round++;
+                            findWinner(array, round);
+                        }
+                    } else {
+                        System.out.println("Coordinates should be from 1 to 3!");
+                    }
+                } else {
+                    System.out.println("You should enter numbers!");
+                }
+            }
+
+            System.out.println("---------");
+            for (int i = 0; i < 3; i++) {
+                System.out.print("| ");
+                for (int j = 0; j < 3; j++) {
+                    System.out.print(array[i][j] + " ");
+                }
+                System.out.print("|");
+                System.out.println();
+            }
+            System.out.println("---------");
+
+            repeat = true;
+
+        }
+
+        if ("Draw".equals(winner)) {
+            System.out.println(winner);
+        } else {
+            System.out.println(winner + " wins");
+        }
+
+
+
+//        System.out.println("---------");
+//        int sum = 0;
+//        boolean even = false;
+//        if ((x + y) % 2 == 0) {
+//            even = true;
+//        }
+
+//        if (!itOk) {
+//            System.out.println("Impossible");
+//        } else if (x + y < 5) {
+//            if (even && x == y) {
+//                System.out.println("Game not finished");
+//            } else if (!even && (x == y + 1 || y == x + 1)) {
+//                System.out.println("Game not finished");
+//            } else {
+//                System.out.println("Impossible");
+//            }
+//        } else if (x + y >= 5 ) {
+//            if (even && x != y) {
+//                System.out.println("Impossible");
+//            } else if (even) {
+//                findWinner(array, x, y);
+//            } else {
+//                if (x == y + 1 || y == x + 1) {
+//                    findWinner(array, x, y);
+//                } else {
+//                    System.out.println("Impossible");
+//                }
+//            }
+//        }
+    }
+
+    public static void findWinner(String[][] array, int x) {
+        int win = 0;
+        if (array[0][0].equals(array[0][1]) && array[0][1].equals(array[0][2])) {
+            if (!array[0][0].equals(" ")) {
+                win++;
+                winner = array[0][0];
+            }
+        }
+        if (array[1][0].equals(array[1][1]) && array[1][1].equals(array [1][2])) {
+            if (!array[1][0].equals(" ")) {
+                win++;
+                winner = array[0][0];
+            }
+        }
+        if (array[2][0].equals(array[2][1]) && array[2][1].equals(array [2][2])) {
+            if (!array[2][0].equals(" ")) {
+                win++;
+                winner = array[0][0];
+            }
+        }
+        if (array[0][0].equals(array[1][0]) && array[1][0].equals(array [2][0])) {
+            if (!array[0][0].equals(" ")) {
+                win++;
+                winner = array[0][0];
+            }
+        }
+        if (array[0][1].equals(array[1][1]) && array[1][1].equals(array [2][1])) {
+            if (!array[0][1].equals(" ")) {
+                win++;
+                winner = array[0][0];
+            }
+        }
+        if (array[0][2].equals(array[1][2]) && array[1][2].equals(array [2][2])) {
+            if (!array[0][2].equals(" ")) {
+                win++;
+                winner = array[0][2];
+            }
+        }
+        if (array[0][0].equals(array[1][1]) && array[1][1].equals(array [2][2])) {
+            if (!array[0][0].equals(" ")) {
+                win++;
+                winner = array[0][0];
+            };
+        }
+        if (array[0][2].equals(array[1][1]) && array[1][1].equals(array [2][0])) {
+            if (!array[0][2].equals(" ")) {
+                win++;
+                winner = array[0][0];
+            }
+        }
+
+        if (x == 9 && win == 0) {
+            winner = "Draw";
+            stillPlaying = false;
+        }
+        if (win == 1) {
+            stillPlaying = false;
+        }
+    }
+
+    private static boolean isInteger(String str) {
+        if (str.isEmpty()) {
+            return false;
+        }
+        return str.matches("-?\\d+");
+    }
+}
